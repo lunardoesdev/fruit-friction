@@ -11,11 +11,12 @@ const engine = new ex.Engine({
 await engine.start();
 
 class Sphere extends ex.Actor {
+  falling: boolean;
   constructor(radius: number) {
     super({
-      pos: ex.vec(engine.halfDrawWidth, 25),
+      pos: ex.vec(engine.input.pointers.primary.lastWorldPos.x, 2 * radius),
       color: new ex.Color(255, 0, 0),
-      collisionType: ex.CollisionType.Active,
+      collisionType: ex.CollisionType.PreventCollision,
     });
     this.collider.useCircleCollider(radius);
     this.graphics.use(
@@ -25,10 +26,11 @@ class Sphere extends ex.Actor {
     );
 
     this.color = new ex.Color(255, 0, 0);
+    this.falling = false;
   }
 }
 
-const sphere = new Sphere(42);
+let sphere = new Sphere(42);
 
 const floorHeight = 10;
 const floor = new ex.Actor({
@@ -53,6 +55,21 @@ const wall2 = new ex.Actor({
   width: 20,
   color: new ex.Color(255, 0, 255),
   collisionType: ex.CollisionType.Fixed,
+});
+
+engine.input.pointers.primary.on("move", function (evt) {
+  if (!sphere.falling) {
+    sphere.pos.x = evt.worldPos.x;
+  }
+});
+
+engine.input.pointers.primary.on("up", function (evt) {
+  if (!sphere.falling) {
+    sphere.falling = true;
+    sphere.body.collisionType = ex.CollisionType.Active;
+    sphere = new Sphere(42);
+    engine.add(sphere);
+  }
 });
 
 engine.add(sphere);
