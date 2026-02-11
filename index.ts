@@ -1,1 +1,4 @@
-console.log("Hello via Bun!");
+import * as ex from "excalibur";
+
+const engine = new ex.Engine();
+engine.start();
