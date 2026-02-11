@@ -5,6 +5,7 @@ const engine = new ex.Engine({
   physics: {
     gravity: ex.vec(0, 500),
     enabled: true,
+    solver: ex.SolverStrategy.Realistic,
   },
 });
 
@@ -91,12 +92,12 @@ class Fruit extends ex.Actor {
         color = new ex.Color(255, 255, 0);
         break;
       }
-      case FruitKind.Peach: {
+      case FruitKind.Mango: {
         radius = 30;
         color = new ex.Color(255, 0, 255);
         break;
       }
-      case FruitKind.Mango: {
+      case FruitKind.Peach: {
         radius = 40;
         color = new ex.Color(100, 100, 0);
         break;
@@ -167,7 +168,7 @@ engine.input.pointers.primary.on("up", function (evt) {
   if (!sphere.falling) {
     sphere.falling = true;
     sphere.body.collisionType = ex.CollisionType.Active;
-    sphere = new Fruit(Math.round(Math.random() * FruitKind.Watermelon));
+    sphere = new Fruit(Math.round(Math.random() * FruitKind.Peach));
     engine.add(sphere);
   }
 });
