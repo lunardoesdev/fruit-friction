@@ -41,9 +41,11 @@ let scoreLabel = new ex.Label({
   text: score.toString(),
   pos: ex.vec(engine.halfDrawWidth, 50),
   font: new ex.Font({
-    size: 42,
+    size: 60,
+    textAlign: ex.TextAlign.Center,
   }),
   z: 100,
+  anchor: ex.vec(0.5, 0.5),
 });
 
 class Fruit extends ex.Actor {
