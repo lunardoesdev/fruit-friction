@@ -43,6 +43,7 @@ let scoreLabel = new ex.Label({
   font: new ex.Font({
     size: 42,
   }),
+  z: 100,
 });
 
 class Fruit extends ex.Actor {
