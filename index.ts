@@ -11,25 +11,15 @@ const engine = new ex.Engine({
 
 await engine.start();
 
-class Sphere extends ex.Actor {
-  falling: boolean;
-  constructor(radius: number) {
-    super({
-      pos: ex.vec(engine.input.pointers.primary.lastWorldPos.x, 2 * radius),
-      color: new ex.Color(255, 0, 0),
-      collisionType: ex.CollisionType.PreventCollision,
-    });
-    this.collider.useCircleCollider(radius);
-    this.graphics.use(
-      new ex.Circle({
-        radius: radius,
-      }),
-    );
-
-    this.color = new ex.Color(255, 0, 0);
-    this.falling = false;
-  }
-}
+let score = 0;
+let scoreLabel = new ex.Label({
+  text: score.toString(),
+  pos: ex.vec(engine.halfDrawWidth, 50),
+  font: new ex.Font({
+    size: 42,
+  }),
+});
+engine.add(scoreLabel);
 
 enum FruitKind {
   Cherry,
@@ -74,6 +64,9 @@ class Fruit extends ex.Actor {
       f.falling = true;
       f.body.collisionType = ex.CollisionType.Active;
       engine.add(f);
+
+      score += (workkind + 5) * 10;
+      scoreLabel.text = score.toString();
     }
   }
 
