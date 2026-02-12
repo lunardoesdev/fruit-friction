@@ -64,8 +64,9 @@ class Fruit extends ex.Actor {
       let label = new ex.Label({
         font: new ex.Font({
           size: 42,
+          textAlign: ex.TextAlign.Center,
         }),
-        pos: ex.vec(engine.halfDrawWidth / 2, engine.halfDrawHeight - 42),
+        pos: ex.vec(engine.halfDrawWidth, engine.halfDrawHeight - 42),
         text:
           "GAME OVER! \nYour score: " +
           score.toString() +
