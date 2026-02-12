@@ -179,6 +179,7 @@ function cleanup() {
 function reset() {
   cleanup();
   score = 0;
+  scoreLabel.text = score.toString();
   sphere = new Fruit(FruitKind.Cherry);
   const floorHeight = 10;
   floor = new ex.Actor({
