@@ -151,6 +151,7 @@ class Fruit extends ex.Actor {
 }
 
 let sphere: Fruit;
+let nextSphere: Fruit;
 let floor: ex.Actor;
 let wall1: ex.Actor;
 let wall2: ex.Actor;
@@ -165,8 +166,12 @@ engine.input.pointers.primary.on("up", function (evt) {
   if (!sphere.falling) {
     sphere.falling = true;
     sphere.body.collisionType = ex.CollisionType.Active;
-    sphere = new Fruit(Math.round(Math.random() * FruitKind.Peach));
+    sphere = nextSphere;
+    sphere.pos.x = engine.input.pointers.primary.lastWorldPos.x;
+    nextSphere = new Fruit(Math.round(Math.random() * FruitKind.Peach));
+    nextSphere.pos = ex.vec(50, 50);
     engine.add(sphere);
+    engine.add(nextSphere);
   }
 });
 
@@ -180,7 +185,10 @@ function reset() {
   cleanup();
   score = 0;
   scoreLabel.text = score.toString();
-  sphere = new Fruit(FruitKind.Cherry);
+  nextSphere = new Fruit(Math.round(Math.random() * FruitKind.Peach));
+  nextSphere.pos = ex.vec(50, 50);
+  engine.add(nextSphere);
+  sphere = new Fruit(Math.round(Math.random() * FruitKind.Peach));
   const floorHeight = 10;
   floor = new ex.Actor({
     pos: ex.vec(engine.halfDrawWidth, engine.drawHeight - floorHeight / 2),
