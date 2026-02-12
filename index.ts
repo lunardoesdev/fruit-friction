@@ -41,9 +41,23 @@ class Fruit extends ex.Actor {
     ) {
       // game over
       engine.remove(this);
-      score = 0;
-      scoreLabel.text = score.toString();
-      reset();
+
+      cleanup();
+      let label = new ex.Label({
+        font: new ex.Font({
+          size: 42,
+        }),
+        pos: ex.vec(engine.halfDrawWidth / 2, engine.halfDrawHeight - 42),
+        text:
+          "GAME OVER! \nYour score: " +
+          score.toString() +
+          "\n\n\nClick anywhere to restart",
+      });
+
+      engine.add(label);
+      engine.input.pointers.primary.once("up", (evt) => {
+        reset();
+      });
     }
   }
 
@@ -156,11 +170,15 @@ engine.input.pointers.primary.on("up", function (evt) {
   }
 });
 
-function reset() {
+function cleanup() {
   engine.currentScene.actors.forEach((a) => {
     engine.remove(a);
   });
+}
 
+function reset() {
+  cleanup();
+  score = 0;
   sphere = new Fruit(FruitKind.Cherry);
   const floorHeight = 10;
   floor = new ex.Actor({
