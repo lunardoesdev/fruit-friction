@@ -19,7 +19,6 @@ let scoreLabel = new ex.Label({
     size: 42,
   }),
 });
-engine.add(scoreLabel);
 
 enum FruitKind {
   Cherry,
@@ -44,6 +43,7 @@ class Fruit extends ex.Actor {
       engine.remove(this);
       score = 0;
       scoreLabel.text = score.toString();
+      reset();
     }
   }
 
@@ -136,32 +136,10 @@ class Fruit extends ex.Actor {
   }
 }
 
-let sphere = new Fruit(FruitKind.Cherry);
-
-const floorHeight = 10;
-const floor = new ex.Actor({
-  pos: ex.vec(engine.halfDrawWidth, engine.drawHeight - floorHeight / 2),
-  height: floorHeight,
-  width: engine.drawWidth / 2,
-  color: new ex.Color(255, 0, 0),
-  collisionType: ex.CollisionType.Fixed,
-});
-
-const wallHeight = engine.drawHeight / 2;
-const wall1 = new ex.Actor({
-  pos: ex.vec(engine.drawWidth / 4, (engine.drawHeight * 3) / 4),
-  height: wallHeight,
-  width: 20,
-  color: new ex.Color(255, 0, 255),
-  collisionType: ex.CollisionType.Fixed,
-});
-const wall2 = new ex.Actor({
-  pos: ex.vec((engine.drawWidth * 3) / 4, (engine.drawHeight * 3) / 4),
-  height: wallHeight,
-  width: 20,
-  color: new ex.Color(255, 0, 255),
-  collisionType: ex.CollisionType.Fixed,
-});
+let sphere: Fruit;
+let floor: ex.Actor;
+let wall1: ex.Actor;
+let wall2: ex.Actor;
 
 engine.input.pointers.primary.on("move", function (evt) {
   if (!sphere.falling) {
@@ -178,7 +156,42 @@ engine.input.pointers.primary.on("up", function (evt) {
   }
 });
 
-engine.add(sphere);
-engine.add(floor);
-engine.add(wall1);
-engine.add(wall2);
+function reset() {
+  engine.currentScene.actors.forEach((a) => {
+    engine.remove(a);
+  });
+
+  sphere = new Fruit(FruitKind.Cherry);
+  const floorHeight = 10;
+  floor = new ex.Actor({
+    pos: ex.vec(engine.halfDrawWidth, engine.drawHeight - floorHeight / 2),
+    height: floorHeight,
+    width: engine.drawWidth / 2,
+    color: new ex.Color(255, 0, 0),
+    collisionType: ex.CollisionType.Fixed,
+  });
+
+  const wallHeight = engine.drawHeight / 2;
+  wall1 = new ex.Actor({
+    pos: ex.vec(engine.drawWidth / 4, (engine.drawHeight * 3) / 4),
+    height: wallHeight,
+    width: 20,
+    color: new ex.Color(255, 0, 255),
+    collisionType: ex.CollisionType.Fixed,
+  });
+  wall2 = new ex.Actor({
+    pos: ex.vec((engine.drawWidth * 3) / 4, (engine.drawHeight * 3) / 4),
+    height: wallHeight,
+    width: 20,
+    color: new ex.Color(255, 0, 255),
+    collisionType: ex.CollisionType.Fixed,
+  });
+
+  engine.add(sphere);
+  engine.add(floor);
+  engine.add(wall1);
+  engine.add(wall2);
+  engine.add(scoreLabel);
+}
+
+reset();
