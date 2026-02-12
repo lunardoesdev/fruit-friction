@@ -21,7 +21,9 @@ resources.set(
   new ex.ImageSource("./assets/watermelon.png"),
 );
 
-var loader = new ex.Loader([...resources.values()]);
+var loader = new ex.DefaultLoader({
+  loadables: [...resources.values()],
+});
 
 const engine = new ex.Engine({
   // backgroundColor: new ex.Color(0, 100, 0),
@@ -32,7 +34,7 @@ const engine = new ex.Engine({
   },
 });
 
-await engine.start(loader);
+await engine.start(loader, {});
 
 let score = 0;
 let scoreLabel = new ex.Label({
