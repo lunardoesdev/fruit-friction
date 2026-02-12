@@ -35,6 +35,18 @@ class Fruit extends ex.Actor {
   falling: boolean;
   kind: FruitKind;
 
+  override onPostUpdate(engine: ex.Engine, elapsed: number): void {
+    if (
+      Math.abs(this.pos.x) > 4000 ||
+      Math.abs(this.pos.y) > engine.drawHeight
+    ) {
+      // game over
+      engine.remove(this);
+      score = 0;
+      scoreLabel.text = score.toString();
+    }
+  }
+
   override onPreCollisionResolve(
     self: ex.Collider,
     other: ex.Collider,
