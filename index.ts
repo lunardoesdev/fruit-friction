@@ -1,25 +1,5 @@
 import * as ex from "excalibur";
 
-const engine = new ex.Engine({
-  // backgroundColor: new ex.Color(0, 100, 0),
-  physics: {
-    gravity: ex.vec(0, 500),
-    enabled: true,
-    solver: ex.SolverStrategy.Realistic,
-  },
-});
-
-await engine.start();
-
-let score = 0;
-let scoreLabel = new ex.Label({
-  text: score.toString(),
-  pos: ex.vec(engine.halfDrawWidth, 50),
-  font: new ex.Font({
-    size: 42,
-  }),
-});
-
 enum FruitKind {
   Cherry,
   Papaya,
@@ -29,6 +9,39 @@ enum FruitKind {
   Watermelon,
   Nothing = 999,
 }
+
+let resources: Map<number, any> = new Map();
+resources.set(FruitKind.Cherry, new ex.ImageSource("./assets/red-cherry.png"));
+resources.set(FruitKind.Papaya, new ex.ImageSource("./assets/pear.png"));
+resources.set(FruitKind.Mango, new ex.ImageSource("./assets/plum.png"));
+resources.set(FruitKind.Peach, new ex.ImageSource("./assets/peach.png"));
+resources.set(FruitKind.Melon, new ex.ImageSource("./assets/lime.png"));
+resources.set(
+  FruitKind.Watermelon,
+  new ex.ImageSource("./assets/watermelon.png"),
+);
+
+var loader = new ex.Loader([...resources.values()]);
+
+const engine = new ex.Engine({
+  // backgroundColor: new ex.Color(0, 100, 0),
+  physics: {
+    gravity: ex.vec(0, 500),
+    enabled: true,
+    solver: ex.SolverStrategy.Realistic,
+  },
+});
+
+await engine.start(loader);
+
+let score = 0;
+let scoreLabel = new ex.Label({
+  text: score.toString(),
+  pos: ex.vec(engine.halfDrawWidth, 50),
+  font: new ex.Font({
+    size: 42,
+  }),
+});
 
 class Fruit extends ex.Actor {
   falling: boolean;
@@ -139,11 +152,11 @@ class Fruit extends ex.Actor {
     });
     this.kind = kind;
     this.collider.useCircleCollider(radius);
-    this.graphics.use(
-      new ex.Circle({
-        radius: radius,
-      }),
-    );
+    // console.log(resources.get(this.kind))
+    const sprite: ex.Sprite = resources.get(this.kind).toSprite();
+    sprite.width = radius * 2;
+    sprite.height = radius * 2;
+    this.graphics.use(sprite);
 
     this.color = color;
     this.falling = false;
