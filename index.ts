@@ -21,8 +21,10 @@ resources.set(
   new ex.ImageSource("./assets/watermelon.png"),
 );
 
+const bg = new ex.ImageSource("./assets/bg.png");
+
 var loader = new ex.DefaultLoader({
-  loadables: [...resources.values()],
+  loadables: [...resources.values(), bg],
 });
 
 const engine = new ex.Engine({
@@ -200,6 +202,16 @@ function cleanup() {
   });
 }
 
+const bgSprite = new ex.Actor({
+  graphic: bg.toSprite(),
+  // anchor: ex.vec(0, 0),
+  width: engine.drawWidth,
+  height: engine.drawHeight,
+  pos: ex.vec(engine.halfDrawWidth, engine.halfDrawHeight),
+  scale: ex.vec(0.65, 0.7),
+  z: -1,
+});
+
 function reset() {
   cleanup();
   score = 0;
@@ -215,6 +227,7 @@ function reset() {
     width: engine.drawWidth / 2,
     color: new ex.Color(255, 0, 0),
     collisionType: ex.CollisionType.Fixed,
+    opacity: 0,
   });
 
   const wallHeight = engine.drawHeight / 2;
@@ -224,6 +237,7 @@ function reset() {
     width: 20,
     color: new ex.Color(255, 0, 255),
     collisionType: ex.CollisionType.Fixed,
+    opacity: 0,
   });
   wall2 = new ex.Actor({
     pos: ex.vec((engine.drawWidth * 3) / 4, (engine.drawHeight * 3) / 4),
@@ -231,6 +245,7 @@ function reset() {
     width: 20,
     color: new ex.Color(255, 0, 255),
     collisionType: ex.CollisionType.Fixed,
+    opacity: 0,
   });
 
   engine.add(sphere);
@@ -238,6 +253,7 @@ function reset() {
   engine.add(wall1);
   engine.add(wall2);
   engine.add(scoreLabel);
+  engine.add(bgSprite);
 }
 
 reset();
