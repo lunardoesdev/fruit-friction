@@ -1,6 +1,6 @@
 # fruit-friction
 
-![./demo.gif](./demo.gif)
+![./demo.png](./demo.png)
 
 To install dependencies:
 
