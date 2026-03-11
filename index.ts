@@ -1,5 +1,16 @@
 import * as ex from "excalibur";
 
+const redCherryAsset = new URL("./assets/red-cherry.png", import.meta.url).href;
+const pearAsset = new URL("./assets/pear.png", import.meta.url).href;
+const plumAsset = new URL("./assets/plum.png", import.meta.url).href;
+const peachAsset = new URL("./assets/peach.png", import.meta.url).href;
+const limeAsset = new URL("./assets/lime.png", import.meta.url).href;
+const watermelonAsset = new URL(
+  "./assets/watermelon.png",
+  import.meta.url,
+).href;
+const backgroundAsset = new URL("./assets/bg.png", import.meta.url).href;
+
 enum FruitKind {
   Cherry,
   Papaya,
@@ -11,17 +22,14 @@ enum FruitKind {
 }
 
 let resources: Map<number, any> = new Map();
-resources.set(FruitKind.Cherry, new ex.ImageSource("./assets/red-cherry.png"));
-resources.set(FruitKind.Papaya, new ex.ImageSource("./assets/pear.png"));
-resources.set(FruitKind.Mango, new ex.ImageSource("./assets/plum.png"));
-resources.set(FruitKind.Peach, new ex.ImageSource("./assets/peach.png"));
-resources.set(FruitKind.Melon, new ex.ImageSource("./assets/lime.png"));
-resources.set(
-  FruitKind.Watermelon,
-  new ex.ImageSource("./assets/watermelon.png"),
-);
+resources.set(FruitKind.Cherry, new ex.ImageSource(redCherryAsset));
+resources.set(FruitKind.Papaya, new ex.ImageSource(pearAsset));
+resources.set(FruitKind.Mango, new ex.ImageSource(plumAsset));
+resources.set(FruitKind.Peach, new ex.ImageSource(peachAsset));
+resources.set(FruitKind.Melon, new ex.ImageSource(limeAsset));
+resources.set(FruitKind.Watermelon, new ex.ImageSource(watermelonAsset));
 
-const bg = new ex.ImageSource("./assets/bg.png");
+const bg = new ex.ImageSource(backgroundAsset);
 
 var loader = new ex.DefaultLoader({
   loadables: [...resources.values(), bg],
